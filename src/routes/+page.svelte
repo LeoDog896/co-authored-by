@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fetchEmail, makeRedirect } from "$lib/query.ts"
+    import { fetchEmail, makeRedirect } from "$lib/query"
     import { onMount } from "svelte";
 
     let email = "";
@@ -15,8 +15,8 @@
 
         token = localToken;
         
-        fetchEmail().then((data) => {
-            email = data.email;
+        fetchEmail("test").then((data) => {
+            email = data;
             alert(email)
         });
     });
