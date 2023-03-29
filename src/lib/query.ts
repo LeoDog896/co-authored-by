@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 
-function makeRedirect() {
+export function makeRedirect() {
   const redirectBase = "https://github.com/login/oauth/authorize?client_id=5a0ee65e494d1b98ca1a&redirect_uri=https://leodog896.github.io/co-authored-by/callback&state="
 
   const bytes = crypto.getRandomValues(new Uint8Array(16))

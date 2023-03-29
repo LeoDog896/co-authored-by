@@ -1,10 +1,20 @@
 <script lang="ts">
-    import { fetchEmail } from "$lib/query.ts"
+    import { fetchEmail, makeRedirect } from "$lib/query.ts"
     import { onMount } from "svelte";
 
     let email = "";
+    let token = "";
 
     onMount(() => {
+        const localToken = localStorage.getItem("token");
+
+        if (!localToken) {
+            window.location.href = makeRedirect();
+            return;
+        }
+
+        token = localToken;
+        
         fetchEmail().then((data) => {
             email = data.email;
             alert(email)
