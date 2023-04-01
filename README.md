@@ -1,4 +1,4 @@
 # co-authored-by
 generate co-authored-by descriptions for authors, while (attempting to) respect email privacy
 
-This uses an OAuth app, specifically for grabbing public information, as specified in the request.
+in the back, this uses the [`co-authored-by-deno`](https://github.com/LeoDog896/co-authored-by-deno) API, hosted with Deno Deploy.
