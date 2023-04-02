@@ -1,28 +1,48 @@
 <script lang="ts">
-    import { fetchEmail, makeRedirect } from "$lib/query"
-    import { onMount } from "svelte";
+    async function getCoAuthoredBy(login: string): Promise<string | null> {
+        const response = await fetch(`https://co-authored-by.deno.dev/${login}`);
 
-    let email = "";
-    let token = "";
-
-    onMount(() => {
-        const localToken = localStorage.getItem("token");
-
-        if (!localToken) {
-            window.location.href = makeRedirect();
-            return;
+        if (response.status === 200) {
+            return await response.text();
+        } else {
+            return null;
         }
+    }
 
-        token = localToken;
-        
-        fetchEmail("test").then((data) => {
-            email = data;
-            alert(email)
-        });
-    });
+    let input: string;
+    let coAuthoredBy: Promise<string | null> | null = null;
 </script>
 
-{email}
+<div>
+    <input bind:value={input} />
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+    <button on:click={() => coAuthoredBy = getCoAuthoredBy(input)}>
+        Submit
+    </button>
+</div>
+
+{#await coAuthoredBy}
+    <p>Loading...</p>
+{:then coAuthoredBy}
+    {#if coAuthoredBy}
+        <p>{coAuthoredBy}</p>
+    {:else}
+        <p>Not found</p>
+    {/if}
+{/await}
+
+<style>
+    /* brutalist centered layout */
+    :global(body) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+    }
+
+    button {
+        margin-left: .5rem;
+    }
+</style>
