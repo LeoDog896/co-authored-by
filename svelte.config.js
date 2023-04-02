@@ -9,9 +9,6 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		paths: {
-			base: '/co-authored-by'
-		}
 	}
 };
 
