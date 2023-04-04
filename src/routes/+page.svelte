@@ -13,6 +13,17 @@
     let coAuthoredBy: Promise<string | null> | null = null;
 </script>
 
+<h1>Co-authored-by</h1>
+
+<!-- dark/light image in ./commit-template-dark.png and ./commit-template-light.png -->
+<picture>
+    <source srcset="commit-template-dark.png" media="(prefers-color-scheme: dark)" />
+    <source srcset="commit-template-light.png" media="(prefers-color-scheme: light)" />
+    <img src="commit-template-light.png" alt="commit template" />
+</picture>
+
+<p>Enter a GitHub login to get their co-authored-by line.</p>
+
 <div>
     <input bind:value={input} />
 
@@ -40,9 +51,25 @@
         flex-direction: column;
         height: 100vh;
         margin: 0;
+        font-family: sans-serif;
     }
 
     button {
         margin-left: .5rem;
+    }
+
+    img {
+        border: 1px solid #ccc;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :global(body) {
+            background-color: #1b1d20;
+            color: #eee;
+        }
+
+        img {
+            border-color: #333;
+        }
     }
 </style>
