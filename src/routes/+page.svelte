@@ -1,5 +1,7 @@
 <script lang="ts">
-    async function getCoAuthoredBy(login: string): Promise<string | null> {
+    import Copy from "$lib/svg/copy.svg?component";
+
+    async function getCoAuthoredBy(login: string) {
         const response = await fetch(`https://co-authored-by.deno.dev/${login}`);
 
         if (response.status === 200) {
@@ -9,8 +11,14 @@
         }
     }
 
+    function setCoAuthoredBy() {
+        coAuthoredBy = getCoAuthoredBy(input);
+    }
+
     let input: string;
     let coAuthoredBy: Promise<string | null> | null = null;
+
+    let copyButton: HTMLButtonElement;
 </script>
 
 <h1>Co-authored-by</h1>
@@ -25,10 +33,14 @@
 <p>Enter a GitHub login to get their co-authored-by line.</p>
 
 <div>
-    <input bind:value={input} />
+    <input bind:value={input} placeholder="GitHub Login" on:keyup={e => {
+        if (e.key === 'Enter') {
+            setCoAuthoredBy();
+        }
+    }} />
 
-    <button on:click={() => coAuthoredBy = getCoAuthoredBy(input)}>
-        Submit
+    <button class="button" on:click={setCoAuthoredBy}>
+        Find
     </button>
 </div>
 
@@ -36,7 +48,15 @@
     <p>Loading...</p>
 {:then coAuthoredBy}
     {#if coAuthoredBy}
-        <p>{coAuthoredBy}</p>
+        <p>
+            <code>{coAuthoredBy}</code>
+            <button bind:this={copyButton} class="copy" on:click={() => {
+                navigator.clipboard.writeText(coAuthoredBy);
+                copyButton.classList.add('copy-animation');
+            }}>
+                <Copy />
+            </button>
+        </p>
     {:else}
         <p>Not found</p>
     {/if}
@@ -62,6 +82,74 @@
         border: 1px solid #ccc;
     }
 
+    .copy {
+        background: transparent;
+        border: none;
+        padding: 0;
+        vertical-align: middle;
+    }
+
+    .copy:hover {
+        cursor: pointer;
+    }
+
+    /* simple clean input / button, futuristic */
+    input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        color: inherit;
+        font-size: 1rem;
+        padding: .5rem;
+    }
+
+    input:focus {
+        outline: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    button {
+        background: transparent;
+        border: 1px solid #ccc;
+        color: inherit;
+        font-size: 1rem;
+        padding: .5rem;
+    }
+
+    button.button:hover {
+        border: 1px solid #eee;
+        background: #eee;
+    }
+
+    code {
+        background: #eee;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: .25rem .5rem;
+    }
+
+    :global(svg) {
+        vertical-align: middle;
+    }
+
+    @keyframes copy {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    :global(.copy-animation) {
+        animation: copy 1s;
+    }
+
     @media (prefers-color-scheme: dark) {
         :global(body) {
             background-color: #1b1d20;
@@ -70,6 +158,33 @@
 
         img {
             border-color: #333;
+        }
+
+        input {
+            border-bottom-color: #333;
+        }
+
+        input:focus {
+            border-bottom-color: #555;
+        }
+
+        button.button {
+            border-color: #333;
+        }
+
+        button.button:hover {
+            border-color: #555;
+            background: #555;
+        }
+
+        code {
+            background: #333;
+            border-color: #555;
+        }
+
+        :global(path) {
+            /* set stroke color to white */
+            stroke: #eee;
         }
     }
 </style>
