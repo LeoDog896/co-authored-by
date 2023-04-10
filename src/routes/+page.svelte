@@ -1,8 +1,8 @@
 <script lang="ts">
     import Copy from "$lib/svg/copy.svg?component";
 
-    async function getCoAuthoredBy(login: string) {
-        const response = await fetch(`https://co-authored-by.deno.dev/${login}`);
+    async function getCoAuthoredBy(username: string) {
+        const response = await fetch(`https://co-authored-by.deno.dev/${username}`);
 
         if (response.status === 200) {
             return await response.text();
@@ -30,10 +30,10 @@
     <img src="commit-template-light.png" alt="commit template" />
 </picture>
 
-<p>Enter a GitHub login to get their co-authored-by line.</p>
+<p>Enter a GitHub username to get their co-authored-by line.</p>
 
 <div>
-    <input bind:value={input} placeholder="GitHub Login" on:keyup={e => {
+    <input bind:value={input} placeholder="GitHub Username" on:keyup={e => {
         if (e.key === 'Enter') {
             setCoAuthoredBy();
         }
