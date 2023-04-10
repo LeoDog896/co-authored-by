@@ -1,8 +1,8 @@
 <script lang="ts">
     import Copy from "$lib/svg/copy.svg?component";
 
-    async function getCoAuthoredBy(username: string) {
-        const response = await fetch(`https://co-authored-by.deno.dev/${username}`);
+    async function getCoAuthoredBy(login: string) {
+        const response = await fetch(`https://co-authored-by.deno.dev/${login}`);
 
         if (response.status === 200) {
             return await response.text();
