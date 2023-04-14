@@ -32,7 +32,7 @@
 
 <p>Enter a GitHub username to get their co-authored-by line.</p>
 
-<div>
+<main>
 	<input
 		bind:value={input}
 		placeholder="GitHub Username"
@@ -44,7 +44,13 @@
 	/>
 
 	<button class="button" on:click={setCoAuthoredBy}> Find </button>
-</div>
+</main>
+
+<footer>
+	<p>
+		<a href="https://github.com/LeoDog896/co-authored-by">Find me on GitHub!</a>
+	</p>
+</footer>
 
 {#await coAuthoredBy}
 	<p>Loading...</p>
@@ -156,6 +162,20 @@
 		animation: copy 1s;
 	}
 
+	footer {
+		position: absolute;
+		bottom: 0;
+		background: #eee;
+		width: calc(100% - 1rem);
+		padding: 0rem 0.5rem;
+		text-align: center;
+	}
+
+	a {
+		color: inherit;
+		
+	}
+
 	@media (prefers-color-scheme: dark) {
 		:global(body) {
 			background-color: #1b1d20;
@@ -191,6 +211,10 @@
 		:global(path) {
 			/* set stroke color to white */
 			stroke: #eee;
+		}
+
+		footer {
+			background: #333;
 		}
 	}
 </style>
